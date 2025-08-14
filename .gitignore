@@ -1,0 +1,60 @@
+# =========================
+# Node dependencies
+# =========================
+node_modules/
+**/node_modules/
+
+# =========================
+# Build outputs
+# =========================
+# Next.js frontend
+frontend/.next/
+frontend/out/
+
+# Express backend build (if any)
+backend/dist/
+backend/build/
+
+# =========================
+# Environment files
+# =========================
+.env
+*.env
+frontend/.env*
+backend/.env*
+
+# =========================
+# Logs
+# =========================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# OS generated files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# TypeScript
+# =========================
+.next-env.d.ts
+*.tsbuildinfo
+
+# =========================
+# Deployment / Vercel
+# =========================
+.vercel/
+
+# =========================
+# Misc
+# =========================
+api.http
