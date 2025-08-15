@@ -140,6 +140,4 @@ npm run client  # Frontend only
 
 **Built with ❤️ for the coding community**
 
-[⭐ Star this repo](https://github.com/your-username/codexa) • [🐛 Report Bug](https://github.com/your-username/codexa/issues) • [💡 Request Feature](https://github.com/your-username/codexa/issues)
-
 </div>
