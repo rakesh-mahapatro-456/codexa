@@ -44,11 +44,27 @@
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 ![Cloudinary](https://img.shields.io/badge/Cloudinary-002C61?style=for-the-badge&logo=cloudinary&logoColor=white)
 
+ ---
+
+## 📸 Screenshots & Demo 🎥
+
+### Screenshots
+Here are some highlights from Codexa in both Light & Dark mode:
+
+<div align="center">
+  <img src="https://res.cloudinary.com/dqz5xgr5v/image/upload/v1755238427/Screenshot_2025-08-15_at_10.55.52_drpxrh.png " alt="Landing page width="300" style="margin:10px"/>
+  <img src=" https://res.cloudinary.com/dqz5xgr5v/image/upload/v1755238428/Screenshot_2025-08-15_at_10.58.13_ewbygd.pn" alt="Homepage Dark Mode" width="300" style="margin:10px"/>
+  <img src="https://res.cloudinary.com/dqz5xgr5v/image/upload/v1755238428/Screenshot_2025-08-15_at_10.58.23_q8ebr2.png" alt="DSA Sheet " width="300" style="margin:10px"/>
+  <img src="https://res.cloudinary.com/dqz5xgr5v/image/upload/v1755238429/Screenshot_2025-08-15_at_10.58.30_tlvpro.png" alt="DSA Sheet " width="300" style="margin:10px"/>
+  <img src="https://res.cloudinary.com/dqz5xgr5v/image/upload/v1755238430/Screenshot_2025-08-15_at_10.58.51_zn5eo6.png" alt=“settings” width="300" style="margin:10px"/>
+  <img src="https://res.cloudinary.com/dqz5xgr5v/image/upload/v1755238429/Screenshot_2025-08-15_at_10.58.42_zjxic2.png" alt="party “page width="300" style="margin:10px"/>   <img src="https://res.cloudinary.com/dqz5xgr5v/image/upload/v1755238431/Screenshot_2025-08-15_at_11.04.15_be8ruv.png" alt="party “page width="300" style="margin:10px"/> 
+</div>
+
 ---
 
-## Installation 💻
+### Demo Video
+Watch a walkthrough of Codexa:
 
-### 1. Clone the repo
-```bash
-git clone https://github.com/rakesh-mahapatro-456/codexa.git
-cd codexa
+[![Codexa Demo](https://res.cloudinary.com/dqz5xgr5v/image/upload/v1755188861/Screenshot_2025-08-14_at_21.55.51_huxfa6.png
+)](https://www.youtube.com/embed/aoWtPYEPPtg)
+
