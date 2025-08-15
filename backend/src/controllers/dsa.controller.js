@@ -296,77 +296,86 @@ export const getDailyChallenge = async (req, res) => {
 
 
 export const getTargetedDsaProblems = async (req, res) => {
-  const user = await User.findById(req.user._id);
-  if (!user) return res.status(404).json({ message: "User not found" });
-  
-  const todayStart = new Date();
-  todayStart.setHours(0, 0, 0, 0);
-  
-  const todayEnd = new Date();
-  todayEnd.setHours(23, 59, 59, 999);
-  
-  // 🔁 Changed from assignedAt to createdAt
-  const todayLogs = await UserProblemLog.find({
-    user: user._id,
-    problemModel: 'DSAProblem',
-    createdAt: { $gte: todayStart, $lte: todayEnd }
-  }).populate('problemId');
-  
-  const solvedToday = [];
-  const unsolvedToday = [];
-  
-  for (const log of todayLogs) {
-    const problem = log.problemId;
-    const formattedProblem = {
-      _id: problem._id,
-      title: problem.title,
-      link: problem.link,
-      topic: problem.topic,
-      difficulty: problem.difficulty,
-      xpReward: problem.xpReward,
-      sheetName: problem.sheetName,
-      orderInSheet: problem.orderInSheet,
-      status: log.status
-    };
-  
-    if (log.status === 1) {
-      solvedToday.push(formattedProblem);
-    } else {
-      unsolvedToday.push(formattedProblem);
+      const user = await User.findById(req.user._id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+    
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    
+    const todayEnd = new Date();
+    todayEnd.setHours(23, 59, 59, 999);
+    
+    // 🔧 FIXED: Use assignedDate instead of createdAt
+    const todayLogs = await UserProblemLog.find({
+      user: user._id,
+      problemModel: 'DSAProblem',
+      assignedDate: { $gte: todayStart, $lte: todayEnd } // ✅ Changed from createdAt
+    }).populate('problemId');
+    
+    const solvedToday = [];
+    const unsolvedToday = [];
+    
+    for (const log of todayLogs) {
+      // Add null check for safety
+      if (!log.problemId) {
+        console.log('Warning: Log without problem found:', log._id);
+        continue;
+      }
+      
+      const problem = log.problemId;
+      const formattedProblem = {
+        _id: problem._id,
+        title: problem.title,
+        link: problem.link,
+        topic: problem.topic,
+        difficulty: problem.difficulty,
+        xpReward: problem.xpReward,
+        sheetName: problem.sheetName,
+        orderInSheet: problem.orderInSheet,
+        status: log.status
+      };
+    
+      if (log.status === 1) {
+        solvedToday.push(formattedProblem);
+      } else {
+        unsolvedToday.push(formattedProblem);
+      }
     }
-  }
 
-  const backlogLogs = await UserProblemLog.find({
-    user: user._id,
-    problemModel: 'DSAProblem',
-    status: 0,
-    createdAt: { $lt: todayStart } // Assigned before today
-  }).populate('problemId');
-  
-  const backlog = backlogLogs.map(log => {
-    const problem = log.problemId;
-    return {
-      _id: problem._id,
-      title: problem.title,
-      link: problem.link,
-      topic: problem.topic,
-      difficulty: problem.difficulty,
-      xpReward: problem.xpReward,
-      sheetName: problem.sheetName,
-      orderInSheet: problem.orderInSheet,
-      status: log.status
-    };
-  });
-  
-  
-  return res.status(200).json({
-    message: "Targeted DSA problems retrieved successfully",
-    data: {
-      solvedToday,
-      unsolvedToday,
-      backlog
-    }
-  });
+    // 🔧 FIXED: Use assignedDate for backlog too
+    const backlogLogs = await UserProblemLog.find({
+      user: user._id,
+      problemModel: 'DSAProblem',
+      status: 0,
+      assignedDate: { $lt: todayStart } // ✅ Changed from createdAt
+    }).populate('problemId');
+    
+    const backlog = backlogLogs
+      .filter(log => log.problemId) // Filter out logs with missing problems
+      .map(log => {
+        const problem = log.problemId;
+        return {
+          _id: problem._id,
+          title: problem.title,
+          link: problem.link,
+          topic: problem.topic,
+          difficulty: problem.difficulty,
+          xpReward: problem.xpReward,
+          sheetName: problem.sheetName,
+          orderInSheet: problem.orderInSheet,
+          status: log.status
+        };
+      });
+    
+    return res.status(200).json({
+      message: "Targeted DSA problems retrieved successfully",
+      data: {
+        solvedToday,
+        unsolvedToday,
+        backlog
+      }
+    });
+    
   
 };
 
