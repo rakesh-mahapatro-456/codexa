@@ -1,4 +1,6 @@
-# Codexa 🚀
+<div align="center">
+# Codexa 
+</div>
 
 <div align="center">
   
