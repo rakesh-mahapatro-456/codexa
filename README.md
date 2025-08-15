@@ -64,7 +64,7 @@ Highlights of Codexa in Light & Dark mode:
 ### Demo Video
 Watch a walkthrough of Codexa:
 
-[![Codexa Demo](https://res.cloudinary.com/dqz5xgr5v/image/upload/v1755188861/Screenshot_2025-08-14_at_21.55.51_huxfa6.png)](https://www.youtube.com/embed/aoWtPYEPPtg)
+[![Codexa Demo]](https://www.youtube.com/embed/aoWtPYEPPtg)
 
 ---
 
