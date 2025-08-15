@@ -1,6 +1,4 @@
-<div align="center">
-# Codexa 
-</div>
+### Codexa 
 
 <div align="center">
   
