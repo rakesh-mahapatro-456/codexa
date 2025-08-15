@@ -1,39 +1,49 @@
 # Codexa 🚀
 
+<div align="center">
+  
 ![Codexa Banner](https://img.shields.io/badge/Codexa-DSA%20Practice-blue?style=for-the-badge&logo=github)
 
-**Codexa** is a real-time collaborative platform for practicing **Data Structures & Algorithms (DSA)**. Gamify your learning with XP, levels, streaks, badges, and collaborative coding sessions. Solve problems, track progress, and compete with others—all in one place!
+**Real-time collaborative platform for practicing Data Structures & Algorithms (DSA)**
 
-🌐 **Live Demo:** [codexa-tau.vercel.app](https://codexa-tau.vercel.app)
+Gamify your learning with XP, levels, streaks, badges, and collaborative coding sessions.  
+Solve problems, track progress, and compete with others—all in one place!
+
+🌐 **[Live Demo](https://codexa-tau.vercel.app)**
+
+</div>
 
 ---
 
-## Features ✨
+## ✨ Features
 
 ### 🧠 DSA Practice
-- Curated problems based on your progress
-- Full DSA sheet with topic-wise organization
-- Mark problems as solved to earn XP & levels
-- Difficulty filtering: Easy, Medium, Hard
+- **Curated Problems** — Personalized problem recommendations based on your progress
+- **Complete DSA Sheet** — Topic-wise organization with comprehensive coverage
+- **Progress Tracking** — Mark problems as solved to earn XP & unlock new levels
+- **Smart Filtering** — Filter by difficulty: Easy, Medium, Hard
 
 ### 🎮 Gamified Learning
-- XP & Level system  
-- Daily coding streaks with calendar view  
-- Badges & achievements  
-- Leaderboard to compete globally
+- **XP & Level System** — Earn experience points and level up as you solve problems
+- **Daily Coding Streaks** — Maintain streaks with interactive calendar view
+- **Badges & Achievements** — Unlock special rewards for milestones
+- **Global Leaderboard** — Compete with coders worldwide
 
 ### 🤝 Real-time Collaboration
-- Instant chat with file sharing (images, PDFs, code snippets)  
-- Collaborative problem solving  
+- **Instant Messaging** — Live chat with file sharing capabilities
+- **File Support** — Share images, PDFs, and code snippets seamlessly
+- **Collaborative Problem Solving** — Work together on challenging problems
 
 ### 🎨 Modern UI/UX
-- Responsive design for desktop & mobile  
-- Dock-based navigation system  
-- Dark/Light theme support  
+- **Fully Responsive** — Optimized for both desktop and mobile devices
+- **Dock Navigation** — Intuitive dock-based navigation system
+- **Theme Support** — Switch between Dark and Light modes
 
 ---
 
 ## 🛠 Tech Stack
+
+<div align="center">
 
 ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)
 ![Redux](https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=redux&logoColor=white)
@@ -44,12 +54,14 @@
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 ![Cloudinary](https://img.shields.io/badge/Cloudinary-002C61?style=for-the-badge&logo=cloudinary&logoColor=white)
 
+</div>
+
 ---
 
-## 📸 Screenshots & Demo 🎥
+## 📸 Screenshots & Demo
 
 ### Screenshots
-Highlights of Codexa in Light & Dark mode:
+*Highlights of Codexa :*
 
 <div align="center">
   <img src="https://res.cloudinary.com/dqz5xgr5v/image/upload/v1755238427/Screenshot_2025-08-15_at_10.55.52_drpxrh.png" alt="Landing Page" width="300" style="margin:10px"/>
@@ -61,17 +73,73 @@ Highlights of Codexa in Light & Dark mode:
   <img src="https://res.cloudinary.com/dqz5xgr5v/image/upload/v1755238431/Screenshot_2025-08-15_at_11.04.15_be8ruv.png" alt="Party Page 2" width="300" style="margin:10px"/>
 </div>
 
-### Demo Video
-Watch a walkthrough of Codexa:
+### 🎥 Demo Video
+*Watch a complete walkthrough of Codexa:*
 
-[![Codexa Demo]](https://www.youtube.com/embed/aoWtPYEPPtg)
+[![Codexa Demo](https://img.shields.io/badge/Watch%20Demo-YouTube-red?style=for-the-badge&logo=youtube)](https://www.youtube.com/embed/aoWtPYEPPtg)
 
 ---
 
 ## 🚀 Getting Started
 
-1. **Clone the repo**
+### Prerequisites
+- Node.js (v14 or higher)
+- MongoDB database
+- Cloudinary account (for file storage)
+
+### Installation
+
+1. **Clone the repository**
 ```bash
 git clone https://github.com/your-username/codexa.git
 cd codexa
+```
 
+2. **Install dependencies**
+```bash
+# Install server dependencies
+npm install
+
+# Install client dependencies
+cd client
+npm install
+cd ..
+```
+
+3. **Environment Setup**
+Create a `.env` file in the root directory:
+```env
+NODE_ENV=development
+PORT=5000
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+```
+
+4. **Run the application**
+```bash
+# Run both client and server concurrently
+npm run dev
+
+# Or run separately
+npm run server  # Backend only
+npm run client  # Frontend only
+```
+
+5. **Access the application**
+- Frontend: `http://localhost:3000`
+- Backend: `http://localhost:5000`
+
+
+
+---
+
+<div align="center">
+
+**Built with ❤️ for the coding community**
+
+[⭐ Star this repo](https://github.com/your-username/codexa) • [🐛 Report Bug](https://github.com/your-username/codexa/issues) • [💡 Request Feature](https://github.com/your-username/codexa/issues)
+
+</div>
