@@ -1,5 +1,6 @@
 # Codexa 
-
+> ⚠️ **Note:** The backend is hosted on [Render Free Tier](https://render.com/).  
+> Since free tier instances go to sleep after periods of inactivity, the **first request may take 30–60 seconds** to wake up the server. After that, performance will be normal. 🚀  
 <div align="center">
   
 ![Codexa Banner](https://img.shields.io/badge/Codexa-DSA%20Practice-blue?style=for-the-badge&logo=github)
