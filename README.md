@@ -12,10 +12,10 @@
 **Real-time collaborative DSA practice platform**
 
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=white)
-![Express](https://img.shields.io/badge/Express-000000?style=flat-square&logo=express&logoColor=white)
+![Express](https://img.shields.io/badge/Express_5-000000?style=flat-square&logo=express&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white)
 ![Socket.IO](https://img.shields.io/badge/Socket.IO-010101?style=flat-square&logo=socket.io&logoColor=white)
-![React](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black)
+![Next.js](https://img.shields.io/badge/Next.js_15-000000?style=flat-square&logo=next.js&logoColor=white)
 ![Redux](https://img.shields.io/badge/Redux-764ABC?style=flat-square&logo=redux&logoColor=white)
 ![Cloudinary](https://img.shields.io/badge/Cloudinary-002C61?style=flat-square&logo=cloudinary&logoColor=white)
 
@@ -29,71 +29,219 @@
 
 ## `$ cat overview.txt`
 
-Codexa is a gamified DSA practice platform built around a **WebSocket-heavy backend**. The real-time layer is the core product — presence tracking, live chat, file sharing, and collaborative problem solving all run through Socket.IO. The progression system (XP, streaks, badges, leaderboard) is computed entirely server-side.
+Codexa is a gamified DSA practice platform with a **WebSocket-heavy backend** and an **automated cron job system**. The real-time layer powers live help sessions, room-based chat, and presence tracking. The progression engine (XP, streaks, badges, leaderboard) runs entirely server-side. Cron jobs auto-assign daily targets and generate daily challenges at midnight IST.
 
 ```
-  Client A ──────►                     ┌──────────────────────────┐
-  Client B ──────► Socket.IO Server    │  Room Management         │
-  Client C ──────►   (event loop)  ───►│  Presence tracking       │
-                                       │  Message broadcasting     │
-                                       │  File share via WS        │
-                                       └──────────────────────────┘
-                                                   │
-                                       ┌──────────────────────────┐
-                                       │  XP & Progression Engine │
-                                       │  Streak calculation      │
-                                       │  Level threshold logic   │
-                                       │  Badge unlock triggers   │
-                                       │  Leaderboard ranking     │
-                                       └──────────────────────────┘
-                                                   │
-                                       ┌──────────────────────────┐
-                                       │  Cloudinary Pipeline     │
-                                       │  File/image ingestion    │
-                                       │  URL metadata → MongoDB  │
-                                       └──────────────────────────┘
+┌──────────────────┐     ┌──────────────────────────────────────────┐
+│  Next.js 15      │     │  Express.js 5 Backend                    │
+│  React 19        │◄───►│                                          │
+│  Redux Toolkit   │     │  ┌────────────┐  ┌──────────────────┐   │
+│  Socket.io Client│     │  │ REST API   │  │  Socket.io       │   │
+│  Three.js / R3F  │     │  │ /api/user  │  │  Room mgmt       │   │
+│  Framer Motion   │     │  │ /api/dsa   │  │  Presence        │   │
+│  Clerk Auth      │     │  │ /api/party │  │  Chat events     │   │
+└──────────────────┘     │  │ /api/upload│  │  Session mgmt    │   │
+                         │  └────────────┘  └──────────────────┘   │
+                         │                                          │
+                         │  ┌────────────────────────────────────┐ │
+                         │  │  Cron Jobs (node-cron, IST)        │ │
+                         │  │  dailyTarget.cron    → midnight    │ │
+                         │  │  dailyChallenge.cron → midnight    │ │
+                         │  └────────────────────────────────────┘ │
+                         └──────────────────────────────────────────┘
+                                        │
+                   ┌────────────────────┼────────────────────┐
+                   ▼                    ▼                    ▼
+             MongoDB Atlas          Cloudinary           Clerk Auth
 ```
 
 ---
 
-## `$ cat features.txt`
+## `$ cat backend_architecture.txt`
 
-### ⚡ Real-time Collaboration (Socket.IO)
-```
-Events:
-  join_room       →  user joins collaborative session
-  leave_room      →  presence update broadcast to room
-  send_message    →  message + file broadcast to all room members
-  problem_update  →  shared problem state synced across clients
-  typing          →  typing indicators per room
-```
-- Room architecture with presence tracking — who's online, who's typing
-- File sharing via WebSocket — images, PDFs, code snippets
-- Collaborative problem solving — shared state across all room members
+### MVC Structure
 
-### 🧠 DSA Practice
-- Curated problem set with topic-wise organization
-- Difficulty filtering — Easy, Medium, Hard
-- Progress tracking — mark problems solved to earn XP
-- Personalized recommendations based on progress
-
-### 🎮 Server-side Progression Engine
 ```
-Solve problem → XP awarded → check level threshold
-                                    │
-                    ┌───────────────┴───────────────┐
-                  Level up                    Check streak
-                  Badge unlock                Calendar update
-                  Leaderboard update          Streak badge trigger
+backend/src/
+├── controllers/
+│   ├── user.controller.js
+│   ├── dsa.controller.js
+│   ├── party.controller.js
+│   ├── upload.controller.js
+│   └── SocketManager.js        ← all Socket.io event handling
+├── models/                     ← 9 Mongoose schemas
+│   ├── User.js
+│   ├── DSAProblem.js
+│   ├── UserProblemLog.js
+│   ├── DailyChallenge.js
+│   ├── InstantSolveSession.js
+│   ├── HelpSessionLog.js
+│   ├── Badge.js
+│   ├── Level.js
+│   └── RandomProblem.js
+├── routes/                     ← 4 route files
+│   ├── user.routes.js
+│   ├── dsa.routes.js
+│   ├── party.routes.js
+│   └── upload.routes.js
+├── middlewares/
+│   ├── auth.middleware.js
+│   └── wrapAsync.middleware.js
+└── cron/
+    ├── dailyTarget.cron.js     ← assigns problems per user at midnight
+    └── dailyChallenge.cron.js  ← generates 5-problem challenge daily
 ```
-- XP calculation, level thresholds, badge unlock logic — all server-side
-- Daily streak tracking with interactive calendar view
-- Global leaderboard with real-time ranking updates
 
-### 🔐 Auth & Security
-- JWT stored in httpOnly cookies — prevents XSS token theft
-- bcrypt password hashing
-- Protected REST API routes with middleware
+### Data Models
+
+```
+User
+  ├── name, username (unique), email (unique)
+  ├── passwordHash, xp, streak, problemsSolved
+  ├── helpCount, dailyTarget, lastStreakDate
+  ├── levelId → Level
+  └── badges  → [Badge]
+
+DSAProblem
+  ├── title (unique), link, topic
+  ├── difficulty, xpReward
+  └── sheetName, orderInSheet
+
+UserProblemLog              ← solve status per user per problem
+  ├── user → User
+  ├── problemId (polymorphic) → DSAProblem | RandomProblem
+  ├── status: -1 | 0 | 1 | 2
+  └── xpAwarded, solvedAt
+
+InstantSolveSession         ← real-time help session state
+  ├── userId → User
+  ├── status: available | doubt | in-session | offline
+  └── socketId, roomId, lastMatchedUser
+
+HelpSessionLog              ← completed session analytics
+  ├── helper → User, asker → User
+  ├── roomId, duration (minutes)
+  └── status, startedAt, endedAt, endedBy
+```
+
+### Problem Status System
+```
+-1  →  backlog  (red)
+ 0  →  today    (blue)  ← auto-assigned by cron at midnight
+ 1  →  solved   (green)
+ 2  →  future   (grey)
+```
+
+---
+
+## `$ cat realtime_architecture.txt`
+
+### Socket.IO — Room-based Chat & Help Sessions
+
+```
+Help Request Flow:
+──────────────────
+User A (asker)          SocketManager           User B (helper)
+     │                       │                        │
+     ├── askHelp ────────────┤                        │
+     │                       ├── find available helper│
+     │                       ├── create roomId        │
+     │                       ├── update sessions      │
+     │                       ├── emit "matched" ───────┤
+     ├── matched ────────────┤                        │
+     ├── join-room ──────────┤                        ├── join-room
+     └──────────── Chat session active ───────────────┘
+
+Room ID format: userId_helperId_timestamp
+
+Socket Events:
+  join-room         →  validate + enter private room
+  send-message      →  broadcast text/file to room
+  receive-message   →  incoming message handler
+  typing            →  typing indicator broadcast
+  end-session       →  terminate + update HelpSessionLog
+  disconnect        →  cleanup InstantSolveSession
+```
+
+### Cron Job System
+
+```
+Midnight IST — dailyTarget.cron.js
+  ├── query all users
+  ├── select unsolved problems per user
+  ├── set status: 0 (today's target)
+  └── create UserProblemLog entries
+
+Midnight IST — dailyChallenge.cron.js
+  ├── select 5 random problems
+  └── create DailyChallenge { date, randomProblemIds }
+```
+
+---
+
+## `$ cat api_reference.txt`
+
+### User
+```
+POST  /api/user/signup           →  register + bcrypt hash
+POST  /api/user/login            →  validate + JWT
+GET   /api/user/user-info        →  profile + stats
+PUT   /api/user/update-user      →  update profile
+PUT   /api/user/update-password  →  change password
+```
+
+### DSA
+```
+GET   /api/dsa/dsa-problems             →  full problem library
+GET   /api/dsa/targeted-dsa-problems    →  user's daily targets
+GET   /api/dsa/daily-challenge          →  today's 5-problem challenge
+POST  /api/dsa/mark-problem-as-solved   →  solve + award XP
+GET   /api/dsa/streak                   →  streak data
+GET   /api/dsa/daily-progress           →  today's completion stats
+```
+
+### Party
+```
+POST  /api/party/set-status          →  set availability
+POST  /api/party/ask-help            →  request a helper
+POST  /api/party/end-session         →  terminate session
+GET   /api/party/session-stats       →  help session analytics
+GET   /api/party/available-helpers   →  list of available users
+```
+
+### Upload
+```
+POST  /api/upload                    →  file → Cloudinary → URL
+```
+
+---
+
+## `$ cat frontend_architecture.txt`
+
+```
+Next.js 15.4.5 + React 19
+Redux Toolkit       →  centralized store, async thunks, normalized state
+Socket.io Client    →  real-time events
+Clerk               →  authentication
+Three.js + R3F + Rapier  →  3D visualizations
+Framer Motion       →  animations
+shadcn/ui + Radix UI →  accessible components (33 UI + 31 custom)
+Tailwind CSS 4.0    →  styling
+
+frontend/src/
+├── components/
+│   ├── ui/        # 33 reusable shadcn/ui components
+│   ├── custom/    # 31 business components
+│   └── magicui/   # 10 animation components
+├── pages/
+│   ├── DSA/       # problem solving interface
+│   ├── chat/      # real-time chat
+│   ├── party/     # collaboration sessions
+│   └── settings/  # user preferences
+└── store/
+    └── feature/
+        ├── auth/   dsa/   party/   upload/
+```
 
 ---
 
@@ -103,16 +251,18 @@ Solve problem → XP awarded → check level threshold
 ┌─────────────────────────────────────────────────────────────────┐
 │                                                                 │
 │  BACKEND                                                        │
-│  Node.js · Express    →  REST API + WebSocket server           │
-│  Socket.IO            →  real-time rooms, events, presence     │
-│  MongoDB + Mongoose   →  data modeling, progress tracking      │
-│  JWT (httpOnly)       →  stateless auth                        │
-│  bcrypt               →  password hashing                      │
-│  Cloudinary           →  file/image upload pipeline            │
+│  Node.js (ES modules) · Express.js 5                           │
+│  MongoDB + Mongoose   →  9 data models                         │
+│  Socket.io            →  rooms, presence, events               │
+│  JWT + bcrypt         →  auth + password hashing               │
+│  Cloudinary + Multer  →  file upload pipeline                  │
+│  node-cron            →  daily automation (IST timezone)       │
 │                                                                 │
 │  FRONTEND                                                       │
-│  React · Redux Toolkit →  state management                     │
-│  Tailwind CSS          →  styling                              │
+│  Next.js 15 + React 19 · Redux Toolkit                         │
+│  Socket.io Client · Clerk Auth                                  │
+│  Three.js + React Three Fiber + Rapier  →  3D                  │
+│  Framer Motion · shadcn/ui · Tailwind CSS 4                    │
 │                                                                 │
 │  DEPLOYMENT                                                     │
 │  Frontend  →  Vercel                                           │
@@ -146,6 +296,7 @@ Solve problem → XP awarded → check level threshold
 Node.js v14+
 MongoDB database
 Cloudinary account
+Clerk account (for auth)
 ```
 
 ### Install
@@ -153,14 +304,11 @@ Cloudinary account
 git clone https://github.com/rakesh-mahapatro-456/codexa.git
 cd codexa
 
-# Server dependencies
 npm install
-
-# Client dependencies
 cd client && npm install && cd ..
 ```
 
-### Environment
+### Backend `.env`
 ```env
 NODE_ENV=development
 PORT=5000
@@ -173,7 +321,7 @@ CLOUDINARY_API_SECRET=your_api_secret
 
 ### Run
 ```bash
-npm run dev      # both client + server
+npm run dev      # client + server concurrently
 
 npm run server   # backend only  → http://localhost:5000
 npm run client   # frontend only → http://localhost:3000
