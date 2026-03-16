@@ -29,7 +29,7 @@
 
 ## `$ cat overview.txt`
 
-Codexa is a gamified DSA practice platform with a **WebSocket-heavy backend** and an **automated cron job system**. The real-time layer powers live help sessions, room-based chat, and presence tracking. The progression engine (XP, streaks, badges, leaderboard) runs entirely server-side. Cron jobs auto-assign daily targets and generate daily challenges at midnight IST.
+Codexa is a gamified DSA practice platform with a **WebSocket-heavy backend** and an **automated cron job system**. The real-time layer powers live help sessions, room-based chat, and presence tracking. The progression engine (XP, streaks) runs entirely server-side. Badge and leaderboard models exist in the schema but are not yet implemented. Cron jobs auto-assign daily targets and generate daily challenges at midnight IST.
 
 ```
 ┌──────────────────┐     ┌──────────────────────────────────────────┐
@@ -39,7 +39,7 @@ Codexa is a gamified DSA practice platform with a **WebSocket-heavy backend** an
 │  Socket.io Client│     │  │ REST API   │  │  Socket.io       │   │
 │  Three.js / R3F  │     │  │ /api/user  │  │  Room mgmt       │   │
 │  Framer Motion   │     │  │ /api/dsa   │  │  Presence        │   │
-│  Clerk Auth      │     │  │ /api/party │  │  Chat events     │   │
+│  JWT Auth      │     │  │ /api/party │  │  Chat events     │   │
 └──────────────────┘     │  │ /api/upload│  │  Session mgmt    │   │
                          │  └────────────┘  └──────────────────┘   │
                          │                                          │
@@ -52,7 +52,7 @@ Codexa is a gamified DSA practice platform with a **WebSocket-heavy backend** an
                                         │
                    ┌────────────────────┼────────────────────┐
                    ▼                    ▼                    ▼
-             MongoDB Atlas          Cloudinary           Clerk Auth
+             MongoDB Atlas          Cloudinary           JWT Auth
 ```
 
 ---
@@ -222,7 +222,7 @@ POST  /api/upload                    →  file → Cloudinary → URL
 Next.js 15.4.5 + React 19
 Redux Toolkit       →  centralized store, async thunks, normalized state
 Socket.io Client    →  real-time events
-Clerk               →  authentication
+JWT (custom)         →  authentication
 Three.js + R3F + Rapier  →  3D visualizations
 Framer Motion       →  animations
 shadcn/ui + Radix UI →  accessible components (33 UI + 31 custom)
@@ -260,7 +260,7 @@ frontend/src/
 │                                                                 │
 │  FRONTEND                                                       │
 │  Next.js 15 + React 19 · Redux Toolkit                         │
-│  Socket.io Client · Clerk Auth                                  │
+│  Socket.io Client · JWT Auth                                  │
 │  Three.js + React Three Fiber + Rapier  →  3D                  │
 │  Framer Motion · shadcn/ui · Tailwind CSS 4                    │
 │                                                                 │
@@ -296,7 +296,7 @@ frontend/src/
 Node.js v14+
 MongoDB database
 Cloudinary account
-Clerk account (for auth)
+Not required
 ```
 
 ### Install
