@@ -1,114 +1,166 @@
-# Codexa 
-> ⚠️ **Note:** The backend is hosted on [Render Free Tier](https://render.com/).  
-> Since free tier instances go to sleep after periods of inactivity, the **first request may take 30–60 seconds** to wake up the server. After that, performance will be normal. 🚀  
 <div align="center">
-  
-![Codexa Banner](https://img.shields.io/badge/Codexa-DSA%20Practice-blue?style=for-the-badge&logo=github)
 
-**Real-time collaborative platform for practicing Data Structures & Algorithms (DSA)**
+```
+ ██████╗ ██████╗ ██████╗ ███████╗██╗  ██╗ █████╗
+██╔════╝██╔═══██╗██╔══██╗██╔════╝╚██╗██╔╝██╔══██╗
+██║     ██║   ██║██║  ██║█████╗   ╚███╔╝ ███████║
+██║     ██║   ██║██║  ██║██╔══╝   ██╔██╗ ██╔══██║
+╚██████╗╚██████╔╝██████╔╝███████╗██╔╝ ██╗██║  ██║
+ ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝
+```
 
-Gamify your learning with XP, levels, streaks, badges, and collaborative coding sessions.  
-Solve problems, track progress, and compete with others—all in one place!
+**Real-time collaborative DSA practice platform**
 
-🌐 **[Live Demo](https://codexa-tau.vercel.app)**
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=white)
+![Express](https://img.shields.io/badge/Express-000000?style=flat-square&logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white)
+![Socket.IO](https://img.shields.io/badge/Socket.IO-010101?style=flat-square&logo=socket.io&logoColor=white)
+![React](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black)
+![Redux](https://img.shields.io/badge/Redux-764ABC?style=flat-square&logo=redux&logoColor=white)
+![Cloudinary](https://img.shields.io/badge/Cloudinary-002C61?style=flat-square&logo=cloudinary&logoColor=white)
+
+🌐 **[Live Demo](https://codexa-tau.vercel.app)** · 🎥 **[Demo Video](https://www.youtube.com/embed/aoWtPYEPPtg)**
+
+> ⚠️ Backend on Render free tier — first request after inactivity may take 30–60 seconds.
 
 </div>
 
 ---
 
-## ✨ Features
+## `$ cat overview.txt`
+
+Codexa is a gamified DSA practice platform built around a **WebSocket-heavy backend**. The real-time layer is the core product — presence tracking, live chat, file sharing, and collaborative problem solving all run through Socket.IO. The progression system (XP, streaks, badges, leaderboard) is computed entirely server-side.
+
+```
+  Client A ──────►                     ┌──────────────────────────┐
+  Client B ──────► Socket.IO Server    │  Room Management         │
+  Client C ──────►   (event loop)  ───►│  Presence tracking       │
+                                       │  Message broadcasting     │
+                                       │  File share via WS        │
+                                       └──────────────────────────┘
+                                                   │
+                                       ┌──────────────────────────┐
+                                       │  XP & Progression Engine │
+                                       │  Streak calculation      │
+                                       │  Level threshold logic   │
+                                       │  Badge unlock triggers   │
+                                       │  Leaderboard ranking     │
+                                       └──────────────────────────┘
+                                                   │
+                                       ┌──────────────────────────┐
+                                       │  Cloudinary Pipeline     │
+                                       │  File/image ingestion    │
+                                       │  URL metadata → MongoDB  │
+                                       └──────────────────────────┘
+```
+
+---
+
+## `$ cat features.txt`
+
+### ⚡ Real-time Collaboration (Socket.IO)
+```
+Events:
+  join_room       →  user joins collaborative session
+  leave_room      →  presence update broadcast to room
+  send_message    →  message + file broadcast to all room members
+  problem_update  →  shared problem state synced across clients
+  typing          →  typing indicators per room
+```
+- Room architecture with presence tracking — who's online, who's typing
+- File sharing via WebSocket — images, PDFs, code snippets
+- Collaborative problem solving — shared state across all room members
 
 ### 🧠 DSA Practice
-- **Curated Problems** — Personalized problem recommendations based on your progress
-- **Complete DSA Sheet** — Topic-wise organization with comprehensive coverage
-- **Progress Tracking** — Mark problems as solved to earn XP & unlock new levels
-- **Smart Filtering** — Filter by difficulty: Easy, Medium, Hard
+- Curated problem set with topic-wise organization
+- Difficulty filtering — Easy, Medium, Hard
+- Progress tracking — mark problems solved to earn XP
+- Personalized recommendations based on progress
 
-### 🎮 Gamified Learning
-- **XP & Level System** — Earn experience points and level up as you solve problems
-- **Daily Coding Streaks** — Maintain streaks with interactive calendar view
-- **Badges & Achievements** — Unlock special rewards for milestones
-- **Global Leaderboard** — Compete with coders worldwide
+### 🎮 Server-side Progression Engine
+```
+Solve problem → XP awarded → check level threshold
+                                    │
+                    ┌───────────────┴───────────────┐
+                  Level up                    Check streak
+                  Badge unlock                Calendar update
+                  Leaderboard update          Streak badge trigger
+```
+- XP calculation, level thresholds, badge unlock logic — all server-side
+- Daily streak tracking with interactive calendar view
+- Global leaderboard with real-time ranking updates
 
-### 🤝 Real-time Collaboration
-- **Instant Messaging** — Live chat with file sharing capabilities
-- **File Support** — Share images, PDFs, and code snippets seamlessly
-- **Collaborative Problem Solving** — Work together on challenging problems
-
-### 🎨 Modern UI/UX
-- **Fully Responsive** — Optimized for both desktop and mobile devices
-- **Dock Navigation** — Intuitive dock-based navigation system
-- **Theme Support** — Switch between Dark and Light modes
+### 🔐 Auth & Security
+- JWT stored in httpOnly cookies — prevents XSS token theft
+- bcrypt password hashing
+- Protected REST API routes with middleware
 
 ---
 
-## 🛠 Tech Stack
+## `$ cat stack.txt`
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                                                                 │
+│  BACKEND                                                        │
+│  Node.js · Express    →  REST API + WebSocket server           │
+│  Socket.IO            →  real-time rooms, events, presence     │
+│  MongoDB + Mongoose   →  data modeling, progress tracking      │
+│  JWT (httpOnly)       →  stateless auth                        │
+│  bcrypt               →  password hashing                      │
+│  Cloudinary           →  file/image upload pipeline            │
+│                                                                 │
+│  FRONTEND                                                       │
+│  React · Redux Toolkit →  state management                     │
+│  Tailwind CSS          →  styling                              │
+│                                                                 │
+│  DEPLOYMENT                                                     │
+│  Frontend  →  Vercel                                           │
+│  Backend   →  Render                                           │
+│  Database  →  MongoDB Atlas                                    │
+│  Files     →  Cloudinary                                       │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## `$ ls -la screenshots/`
 
 <div align="center">
-
-![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)
-![Redux](https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=redux&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)
-![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
-![Socket.IO](https://img.shields.io/badge/Socket.IO-010101?style=for-the-badge&logo=socket.io&logoColor=white)
-![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
-![Cloudinary](https://img.shields.io/badge/Cloudinary-002C61?style=for-the-badge&logo=cloudinary&logoColor=white)
-
+  <img src="https://res.cloudinary.com/dqz5xgr5v/image/upload/v1755238427/Screenshot_2025-08-15_at_10.55.52_drpxrh.png" width="280" style="margin:8px"/>
+  <img src="https://res.cloudinary.com/dqz5xgr5v/image/upload/v1755238428/Screenshot_2025-08-15_at_10.58.13_ewbygd.png" width="280" style="margin:8px"/>
+  <img src="https://res.cloudinary.com/dqz5xgr5v/image/upload/v1755238428/Screenshot_2025-08-15_at_10.58.23_q8ebr2.png" width="280" style="margin:8px"/>
+  <img src="https://res.cloudinary.com/dqz5xgr5v/image/upload/v1755238429/Screenshot_2025-08-15_at_10.58.30_tlvpro.png" width="280" style="margin:8px"/>
+  <img src="https://res.cloudinary.com/dqz5xgr5v/image/upload/v1755238430/Screenshot_2025-08-15_at_10.58.51_zn5eo6.png" width="280" style="margin:8px"/>
+  <img src="https://res.cloudinary.com/dqz5xgr5v/image/upload/v1755238429/Screenshot_2025-08-15_at_10.58.42_zjxic2.png" width="280" style="margin:8px"/>
+  <img src="https://res.cloudinary.com/dqz5xgr5v/image/upload/v1755238431/Screenshot_2025-08-15_at_11.04.15_be8ruv.png" width="280" style="margin:8px"/>
 </div>
 
 ---
 
-## 📸 Screenshots & Demo
-
-### Screenshots
-*Highlights of Codexa :*
-
-<div align="center">
-  <img src="https://res.cloudinary.com/dqz5xgr5v/image/upload/v1755238427/Screenshot_2025-08-15_at_10.55.52_drpxrh.png" alt="Landing Page" width="300" style="margin:10px"/>
-  <img src="https://res.cloudinary.com/dqz5xgr5v/image/upload/v1755238428/Screenshot_2025-08-15_at_10.58.13_ewbygd.png" alt="Homepage Dark Mode" width="300" style="margin:10px"/>
-  <img src="https://res.cloudinary.com/dqz5xgr5v/image/upload/v1755238428/Screenshot_2025-08-15_at_10.58.23_q8ebr2.png" alt="DSA Sheet 1" width="300" style="margin:10px"/>
-  <img src="https://res.cloudinary.com/dqz5xgr5v/image/upload/v1755238429/Screenshot_2025-08-15_at_10.58.30_tlvpro.png" alt="DSA Sheet 2" width="300" style="margin:10px"/>
-  <img src="https://res.cloudinary.com/dqz5xgr5v/image/upload/v1755238430/Screenshot_2025-08-15_at_10.58.51_zn5eo6.png" alt="Settings Page" width="300" style="margin:10px"/>
-  <img src="https://res.cloudinary.com/dqz5xgr5v/image/upload/v1755238429/Screenshot_2025-08-15_at_10.58.42_zjxic2.png" alt="Party Page 1" width="300" style="margin:10px"/>
-  <img src="https://res.cloudinary.com/dqz5xgr5v/image/upload/v1755238431/Screenshot_2025-08-15_at_11.04.15_be8ruv.png" alt="Party Page 2" width="300" style="margin:10px"/>
-</div>
-
-### 🎥 Demo Video
-*Watch a complete walkthrough of Codexa:*
-
-[![Codexa Demo](https://img.shields.io/badge/Watch%20Demo-YouTube-red?style=for-the-badge&logo=youtube)](https://www.youtube.com/embed/aoWtPYEPPtg)
-
----
-
-## 🚀 Getting Started
+## `$ cat setup.txt`
 
 ### Prerequisites
-- Node.js (v14 or higher)
-- MongoDB database
-- Cloudinary account (for file storage)
+```
+Node.js v14+
+MongoDB database
+Cloudinary account
+```
 
-### Installation
-
-1. **Clone the repository**
+### Install
 ```bash
-git clone https://github.com/your-username/codexa.git
+git clone https://github.com/rakesh-mahapatro-456/codexa.git
 cd codexa
-```
 
-2. **Install dependencies**
-```bash
-# Install server dependencies
+# Server dependencies
 npm install
 
-# Install client dependencies
-cd client
-npm install
-cd ..
+# Client dependencies
+cd client && npm install && cd ..
 ```
 
-3. **Environment Setup**
-Create a `.env` file in the root directory:
+### Environment
 ```env
 NODE_ENV=development
 PORT=5000
@@ -119,26 +171,21 @@ CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET=your_api_secret
 ```
 
-4. **Run the application**
+### Run
 ```bash
-# Run both client and server concurrently
-npm run dev
+npm run dev      # both client + server
 
-# Or run separately
-npm run server  # Backend only
-npm run client  # Frontend only
+npm run server   # backend only  → http://localhost:5000
+npm run client   # frontend only → http://localhost:3000
 ```
-
-5. **Access the application**
-- Frontend: `http://localhost:3000`
-- Backend: `http://localhost:5000`
-
-
 
 ---
 
 <div align="center">
 
-**Built with ❤️ for the coding community**
+```
+$ echo $BUILT_FOR
+  the coding community · built with ❤️
+```
 
 </div>
